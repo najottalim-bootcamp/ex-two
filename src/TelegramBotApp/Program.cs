@@ -15,6 +15,7 @@ internal class Program
         // StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
         ReceiverOptions receiverOptions = new()
         {
+         
             AllowedUpdates = Array.Empty<UpdateType>() // receive all update types except ChatMember related updates
         };
 
@@ -93,6 +94,7 @@ internal class Program
 
             Console.WriteLine(ErrorMessage);
             return Task.CompletedTask;
+
         }
     }
 
