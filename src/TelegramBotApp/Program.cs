@@ -1,13 +1,13 @@
-﻿using Telegram.Bot;
-using Telegram.Bot.Exceptions;
-using Telegram.Bot.Polling;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+﻿
 
 internal class Program
 {
     private static async Task Main(string[] args)
     {
+        FilmService film = new FilmService();
+        await film.GetFilmAsync("tt0386140");
+        await film.GetFilmListAsync("Zorro");
+        return;
         var botClient = new TelegramBotClient("{YOUR_ACCESS_TOKEN_HERE}");
 
         using CancellationTokenSource cts = new();
@@ -65,22 +65,7 @@ internal class Program
             {
                 Console.WriteLine(ex.Message);
             }
-            // Only process Message updates: https://core.telegram.org/bots/api#message
-    if (update.Message is not { } message)
-                return;
-            // Only process text messages
-            if (message.Text is not { } messageText)
-                return;
-
-            var chatId = message.Chat.Id;
-
-            Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
-
-            // Echo received message text
-            Message sentMessage = await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "You said:\n" + messageText,
-                cancellationToken: cancellationToken);
+           
         }
 
         Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -113,8 +98,34 @@ internal class Program
         throw new NotImplementedException();
     }
 
-    private static Task HandleMessageAsync(ITelegramBotClient botClient, Message? message, CancellationToken cancellationToken)
+    private static async Task HandleMessageAsync(ITelegramBotClient botClient, Message? updmessage, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        // Only process Message updates: https://core.telegram.org/bots/api#message
+        if (updmessage is not { } message)
+            return;
+        // Only process text messages
+        if (message.Text is not { } messageText)
+            return;
+
+        var chatId = message.Chat.Id;
+        if(messageText =="/start")
+        {
+            Message sentMessge = await botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: "Kino nomini kiriting:",
+                cancellationToken: cancellationToken
+                );
+        }
+        else
+        {
+            BotService.SendFilmsAsync(botClient, message, cancellationToken);
+        }
+        Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
+
+        // Echo received message text
+        Message sentMessage = await botClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: "You said:\n" + messageText,
+            cancellationToken: cancellationToken);
     }
 }
