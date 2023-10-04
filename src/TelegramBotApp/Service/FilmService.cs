@@ -1,9 +1,4 @@
-﻿
-using Newtonsoft.Json;
-using TelegramBotApp.Farxodbek;
-using TelegramBotApp.models;
-
-namespace TelegramBotApp.Service
+﻿namespace TelegramBotApp.Service
 {
     public class FilmService
     {
@@ -15,11 +10,11 @@ namespace TelegramBotApp.Service
             }
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri("");
-                string token = "";
-                var json = await client.GetStringAsync(token);
+                client.BaseAddress = new Uri("https://www.omdbapi.com/");
+                string query = $"?apikey=fab15ecd&s={name}&page={pageIndex}";
+                var json = await client.GetStringAsync(query);
                 var root = JsonConvert.DeserializeObject<Root>(json) ;
-                root.Response = name ;
+                root.Response = name;
 
                 return root ;
             }
@@ -29,8 +24,8 @@ namespace TelegramBotApp.Service
         {
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri("");
-                string query = "";
+                client.BaseAddress = new Uri("https://www.omdbapi.com/");
+                string query = $"?apikey=fab15ecd&i={imdbID}";
                 var json = await client.GetStringAsync(query);
                 var film = JsonConvert.DeserializeObject<Search>(json);
 

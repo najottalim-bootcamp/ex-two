@@ -9,11 +9,12 @@ namespace TelegramBotApp.Farxodbek
 {
     public class Root
     {
-       
-            public List<Search> Search { get; set; }
-            public string totalResults { get; set; }
-            public string Response { get; set; }
-      
+        public List<Search> Search { get; set; }
+        public string totalResults { get; set; }
+        public string Response { get; set; }
+        public string? SearchKey { get; set; }
+        public int? pageIndex { get; set; }
+                
 
 
     }
