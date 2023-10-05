@@ -14,8 +14,5 @@ namespace TelegramBotApp.Farxodbek
         public string Response { get; set; }
         public string? SearchKey { get; set; }
         public int? pageIndex { get; set; }
-                
-
-
     }
 }

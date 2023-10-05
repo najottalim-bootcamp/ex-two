@@ -14,8 +14,8 @@
                 string query = $"?apikey=fab15ecd&s={name}&page={pageIndex}";
                 var json = await client.GetStringAsync(query);
                 var root = JsonConvert.DeserializeObject<Root>(json) ;
-                root.Response = name;
-
+                root.SearchKey = name;
+                root.pageIndex = pageIndex;
                 return root ;
             }
         }
@@ -29,7 +29,7 @@
                 var json = await client.GetStringAsync(query);
                 var film = JsonConvert.DeserializeObject<Search>(json);
 
-                return film ;
+                return film;
             }
         }
     }
